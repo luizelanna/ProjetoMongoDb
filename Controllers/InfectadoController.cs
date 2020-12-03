@@ -1,8 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 using ProjetoMongoDb.Data.Collections;
+using ProjetoMongoDb.Models;
 
-namespace ProjetoMongoDb.Models
+namespace ProjetoMongoDb.Controllers
 {
     [ApiController]
     [Route("[controller]")]
@@ -20,7 +21,7 @@ namespace ProjetoMongoDb.Models
         [HttpPost]
         public ActionResult SalvarInfectado([FromBody] InfectadoDto dto)
         {
-            var infectado = new Infectado(dto.DataNascimento, dto.Sexo, dto.Latitude, dto.Longitude);
+            var infectado = new Infectado(dto._id, dto.DataNascimento, dto.Sexo, dto.Latitude, dto.Longitude);
 
             _infectadosCollection.InsertOne(infectado);
 
@@ -34,5 +35,13 @@ namespace ProjetoMongoDb.Models
 
             return Ok(infectados);
         }
+
+        [HttpDelete("{id}")]
+        public ActionResult DeletarInfectados(string id)
+        {
+            _infectadosCollection.DeleteOne(a=>a.Id == id);
+
+            return Ok("Excluido com sucesso");
+        }
     }
-}
+}//{5fc946d1f780f871ada7c8a2}
